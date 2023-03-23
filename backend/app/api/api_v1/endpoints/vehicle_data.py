@@ -60,6 +60,8 @@ def get_vehicle_data(
         )
     
     results = list(filter(lambda vehicle: vehicle_id == vehicle.vehicle_id, vehicles))
+
+    # TODO: remove hard-coded sort-by
     results.sort(key = lambda x: x.soc, reverse=True)
     
     if start or end or limit:

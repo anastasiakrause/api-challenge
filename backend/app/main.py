@@ -1,14 +1,14 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Union, List
 from pathlib import Path
 from sqlalchemy.orm import Session
 
 from datetime import datetime
 from fastapi_pagination import Page, add_pagination, paginate
-from app.schemas.vehicle import VehicleData, VehicleDataSearchResults, VehicleDataCreate
+from app.schemas.vehicle import VehicleData
 from app.crud.crud_vehicle import crud_vehicle
-from app import deps
-import uuid
+from app.api import deps
 from app.core.config import settings
 from app.api.api_v1.api import api_router
 
@@ -18,6 +18,15 @@ BASE_PATH = Path(__file__).resolve().parent
 root_router = APIRouter()
 app = FastAPI(title="Voltera Challenge: Electric Vehicle API")
 
+if settings.BACKEND_CORS_ORIGINS:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
+        allow_origin_regex=settings.BACKEND_CORS_ORIGIN_REGEX,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 @root_router.get("/", status_code=200, response_model=Page[VehicleData])
 def root(db: Session = Depends(deps.get_db)):
