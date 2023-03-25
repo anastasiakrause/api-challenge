@@ -1,11 +1,10 @@
 from typing import Any, Union, List
 from datetime import datetime
-from app.schemas.vehicle import VehicleData
 from operator import attrgetter
 import re
 
 def filter_vehicle_data(
-        payload : List[VehicleData],
+        payload : List,
         start : Union[datetime, None] = None,
         end : Union[datetime, None] = None,
         limit : Union[int, None] = None,
@@ -22,7 +21,7 @@ def filter_vehicle_data(
 
 
 def sort_vehicle_data(
-        payload : List[VehicleData],
+        payload : List,
         sort_parameter : str,
 ):
     """

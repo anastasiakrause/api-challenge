@@ -1,6 +1,6 @@
 from pydantic import BaseModel, validator
 from datetime import datetime
-from typing import List, Union, Sequence, Optional
+from typing import Sequence, Optional
 from app.api.helpers import validate_vehicle_id, validate_timestamp_iso
 
 
