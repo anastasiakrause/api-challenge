@@ -1,31 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from typing import Any, Optional, Union, List
+from typing import Union
 from datetime import datetime
 
 from app.crud.crud_vehicle import crud_vehicle
 from app.api import deps
 from app.schemas.vehicle import VehicleData, VehicleDataCreate
 from fastapi_pagination import Page, paginate
-import uuid
+from app.api.helpers import filter_vehicle_data, sort_vehicle_data
 
 router = APIRouter()
-
-def filter_vehicle_data(
-        payload : List[VehicleData],
-        start : Union[datetime, None] = None,
-        end : Union[datetime, None] = None,
-        limit : Union[int, None] = None,
-):
-    """
-    Helper filter function: filters payload based on optional start, end, and limit params.
-    """
-    
-    if start: payload = [p for p in payload if p.timestamp >= start.replace(tzinfo=None)]
-    if end: payload = [p for p in payload if p.timestamp <= end.replace(tzinfo=None)]
-    if limit and len(payload) > limit: payload = payload[:limit]
-
-    return payload
 
 @router.get("/", status_code=200, response_model=Page[VehicleData])
 def get_all_data(db: Session = Depends(deps.get_db)):
@@ -64,11 +48,10 @@ def get_vehicle_data(
         )
     
     results = list(filter(lambda vehicle: vehicle_id == vehicle.vehicle_id, vehicles))
-
-    # TODO: enable proper sorting functionality through query param
     
-    if start or end or limit:
-        results = filter_vehicle_data(results, start, end, limit)
+    if start or end or limit: results = filter_vehicle_data(results, start, end, limit)
+    
+    if sort_by: results = sort_vehicle_data(results, sort_by)
     
     return paginate(results)
 
@@ -80,10 +63,7 @@ def create_vehicle(
     Create a new Vehicle Data entry.
     """
 
-    # TODO: test this functions
-    # TODO: propogate uuid id entry in creation as well
     vehicle_entry = VehicleDataCreate(
-        id=uuid.uuid4(),
         vehicle_id=vehicle_data_in.vehicle_id,
         timestamp=vehicle_data_in.timestamp,
         speed=vehicle_data_in.speed,
@@ -92,5 +72,6 @@ def create_vehicle(
         elevation=vehicle_data_in.elevation,
         shift_state=vehicle_data_in.shift_state,
     )
+    
     crud_vehicle.create(db, obj_in=vehicle_entry)
     return vehicle_entry

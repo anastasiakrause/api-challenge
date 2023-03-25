@@ -1,5 +1,6 @@
 import React from "react";
 import { useTable, useSortBy } from "react-table";
+import Table from 'react-bootstrap/Table';
 
 const ReactTable = ({ columns, data }) => {
     const {
@@ -15,7 +16,7 @@ const ReactTable = ({ columns, data }) => {
     
     return (
         <>
-        <table {...getTableProps()}>
+        <Table {...getTableProps()} hover responsive>
           <thead>
             {headerGroups.map(headerGroup => (
               <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
@@ -50,7 +51,7 @@ const ReactTable = ({ columns, data }) => {
               );
             })}
           </tbody>
-        </table>
+        </Table>
         </>
       );
 

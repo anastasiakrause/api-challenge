@@ -12,9 +12,6 @@ from app.api import deps
 from app.core.config import settings
 from app.api.api_v1.api import api_router
 
-ROOT = Path(__file__).resolve().parent.parent
-BASE_PATH = Path(__file__).resolve().parent
-
 root_router = APIRouter()
 app = FastAPI(title="Voltera Challenge: Electric Vehicle API")
 

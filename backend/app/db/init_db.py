@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 def init_db(db: Session) -> None:
     Base.metadata.create_all(bind=engine)
     #crud_vehicle.delete(db)
-    
     for vehicle in VEHICLES:
         vehicle_in = VehicleDataCreate(
             vehicle_id=vehicle["vehicle_id"],

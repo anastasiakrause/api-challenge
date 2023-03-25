@@ -3,7 +3,10 @@ import FastAPIClient from "../../client";
 import config from "../../config";
 import Header from "../../components/Header";
 import ReactTable from "../../components/Table";
-
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 
 const client = new FastAPIClient(config);
 
@@ -87,25 +90,39 @@ const Dashboard = () => {
 			>
 				<Header />
 				<div className="container pt-20 text-left">
-					<input
-						type="text"
-						value={filterVehicleIDInput || ''}
-						onChange={handleVehicleIDFilterChange}
-						placeholder={"Search Vehicle ID"}
-					/>
-					<input
-						type="text"
-						value={vehicleStartTimestamp || ''}
-						onChange={handleVehicleStartTimestampChange}
-						placeholder={"Start timestamp"}
-					/>
-					<input
-						type="text"
-						value={vehicleEndTimestamp || ''}
-						onChange={handleVehicleEndTimestampChange}
-						placeholder={"End timestamp"}
-					/>
-					<button onClick={queryClient}> Filter </button>
+
+				<Form>
+					<Row>
+						<Col>
+							<Form.Control
+								type="text"
+								value={filterVehicleIDInput || ''}
+								onChange={handleVehicleIDFilterChange}
+								placeholder={"Search Vehicle ID"}
+							/>
+						</Col>
+						<Col>
+							<Form.Control
+								type="text"
+								value={vehicleStartTimestamp || ''}
+								onChange={handleVehicleStartTimestampChange}
+								placeholder={"Start timestamp"}
+							/>
+						</Col>
+						<Col>
+							<Form.Control
+								type="text"
+								value={vehicleEndTimestamp || ''}
+								onChange={handleVehicleEndTimestampChange}
+								placeholder={"End timestamp"}
+							/>
+						</Col>
+						<Col>
+							<Button variant="outline-secondary" onClick={queryClient}> Filter </Button>
+						</Col>
+					</Row>
+					</Form>
+
 					<ReactTable data={vehicles} columns={columns}/>
 				</div>
 			</section>
