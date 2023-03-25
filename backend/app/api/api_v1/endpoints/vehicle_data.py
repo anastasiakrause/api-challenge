@@ -7,7 +7,7 @@ from app.crud.crud_vehicle import crud_vehicle
 from app.api import deps
 from app.schemas.vehicle import VehicleData, VehicleDataCreate
 from fastapi_pagination import Page, paginate
-from app.api.helpers import filter_vehicle_data, sort_vehicle_data
+from app.api.helpers import filter_vehicle_data, sort_vehicle_data, validate_vehicle_id
 
 router = APIRouter()
 
@@ -39,6 +39,10 @@ def get_vehicle_data(
     Search for vehicle data information by vehicle ID.
     Also able to specify data further by start datetime, end datetime, return limit, and sort attribute.
     """
+    if not validate_vehicle_id(vehicle_id):
+        raise HTTPException(
+            status_code=400, detail=f"Vehicle ID {vehicle_id} is invalid."
+        )
 
     vehicles = crud_vehicle.get_multi(db=db)
 
