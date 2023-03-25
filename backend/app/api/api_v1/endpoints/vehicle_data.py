@@ -17,6 +17,10 @@ def filter_vehicle_data(
         end : Union[datetime, None] = None,
         limit : Union[int, None] = None,
 ):
+    """
+    Helper filter function: filters payload based on optional start, end, and limit params.
+    """
+    
     if start: payload = [p for p in payload if p.timestamp >= start.replace(tzinfo=None)]
     if end: payload = [p for p in payload if p.timestamp <= end.replace(tzinfo=None)]
     if limit and len(payload) > limit: payload = payload[:limit]
@@ -61,8 +65,7 @@ def get_vehicle_data(
     
     results = list(filter(lambda vehicle: vehicle_id == vehicle.vehicle_id, vehicles))
 
-    # TODO: remove hard-coded sort-by
-    results.sort(key = lambda x: x.soc, reverse=True)
+    # TODO: enable proper sorting functionality through query param
     
     if start or end or limit:
         results = filter_vehicle_data(results, start, end, limit)

@@ -27,6 +27,22 @@ class FastAPIClient {
       return data;
     });
   }
+
+  getVehicleDataByID(vehicle_id, start="", end="" ) {
+    if (start == "" && end == ""){
+      return this.apiClient.get(`/vehicle_data/${vehicle_id}`).then(({data}) => {
+        return data;
+      });
+    }
+    return this.apiClient.get(`/vehicle_data/${vehicle_id}`, {
+      params: {
+        start: start,
+        end: end
+      }
+    }).then(({data}) => {
+      return data;
+    });
+  }
 }
 
 export default FastAPIClient;
