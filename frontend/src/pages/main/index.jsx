@@ -7,11 +7,14 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import Pagination from 'react-bootstrap/Pagination'
 
 const client = new FastAPIClient(config);
 
 const Dashboard = () => {
 	const [vehicles, setVehicles] = useState([]);
+	const [activePage, setActivePage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
 
 	useEffect(() => {
 		fetchVehicleData();
@@ -19,7 +22,11 @@ const Dashboard = () => {
 
 	const fetchVehicleData = () => {
 		client.getVehicleData()
-			.then((data) => setVehicles(data?.items));
+			.then((data) => {
+				setVehicles(data?.items);
+				setActivePage(data?.page);
+				setTotalPages(data?.pages);
+			} );
 	}
 
 	const columns = React.useMemo(
@@ -77,15 +84,40 @@ const Dashboard = () => {
         setVehicleEndTimeStamp(end_timestamp);
     }
 
-	// Create client request with query parameters when user clicks 'Filter' button
-	const queryClient = () =>(
-		client.getVehicleDataByID(filterVehicleIDInput, vehicleStartTimestamp, vehicleEndTimestamp).then((data) => setVehicles(data?.items))
+	const handlePageNumberClick = e => {
+        const page_number = e.target.text;
+		queryClient(page_number);
+    }
+
+	const handleFilterButtonClick = () => {
+		const resetPageNumber = 1
+		queryClient(resetPageNumber);
+	}
+
+	// Create client request with query parameters when user clicks 'Filter' or Page button
+	const queryClient = (newPage=activePage) =>(
+		client.getVehicleDataByID(filterVehicleIDInput, vehicleStartTimestamp, vehicleEndTimestamp, newPage)
+			.then((data) => {
+				setVehicles(data?.items);
+				setActivePage(data?.page);
+				setTotalPages(data?.pages);
+			})
 	)
 
 	// Export data to csv
 	const queryExport = () =>(
 		client.exportVehicleData(filterVehicleIDInput, vehicleStartTimestamp, vehicleEndTimestamp).then(() => console.log("Exported to main directory!"))
 	)
+
+	// Create Pagination row of numbers with callback ability
+	let items = []
+	for (let number = 1; number <= totalPages; number ++){
+		items.push(
+			<Pagination.Item onClick= {handlePageNumberClick} key={number} active= {number === activePage}>
+				{number}
+			</Pagination.Item>
+		)
+	}
 	
 	return (
 		<>
@@ -123,7 +155,7 @@ const Dashboard = () => {
 							/>
 						</Col>
 						<Col>
-							<Button variant="outline-primary" onClick={queryClient}> Filter </Button>
+							<Button variant="outline-primary" onClick={handleFilterButtonClick}> Filter </Button>
 						</Col>
 						<Col>
 							<Button variant="outline-secondary" onClick={queryExport}> Export CSV </Button>
@@ -132,6 +164,9 @@ const Dashboard = () => {
 					</Form>
 
 					<ReactTable data={vehicles} columns={columns}/>
+					<div>
+						<Pagination>{items}</Pagination>
+					</div>
 				</div>
 			</section>
 		</>

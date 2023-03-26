@@ -23,22 +23,21 @@ class FastAPIClient {
   }
 
   getVehicleData() {
-    return this.apiClient.get(`/vehicle_data/`).then(({data}) => {
+    return this.apiClient.get(`/vehicle_data/`, {
+      params: { size: 30 } }
+    ).then(({data}) => {
       return data;
     });
   }
 
-  getVehicleDataByID(vehicle_id, start="", end="" ) {
-    if (start == "" && end == ""){
-      return this.apiClient.get(`/vehicle_data/${vehicle_id}`).then(({data}) => {
-        return data;
-      });
-    }
+  getVehicleDataByID(vehicle_id, start="", end="", pageNumber=0 ) {
+    const params = { size: 30 }
+    if (start != ""){ params['start'] = start}
+    if (end != ""){ params['end'] = end}
+    if (pageNumber != 0){ params['page'] = pageNumber}
+
     return this.apiClient.get(`/vehicle_data/${vehicle_id}`, {
-      params: {
-        start: start,
-        end: end
-      }
+      params: params
     }).then(({data}) => {
       return data;
     });
