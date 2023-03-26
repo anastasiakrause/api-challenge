@@ -81,6 +81,11 @@ const Dashboard = () => {
 	const queryClient = () =>(
 		client.getVehicleDataByID(filterVehicleIDInput, vehicleStartTimestamp, vehicleEndTimestamp).then((data) => setVehicles(data?.items))
 	)
+
+	// Export data to csv
+	const queryExport = () =>(
+		client.exportVehicleData(filterVehicleIDInput, vehicleStartTimestamp, vehicleEndTimestamp).then(() => console.log("Exported to main directory!"))
+	)
 	
 	return (
 		<>
@@ -118,7 +123,10 @@ const Dashboard = () => {
 							/>
 						</Col>
 						<Col>
-							<Button variant="outline-secondary" onClick={queryClient}> Filter </Button>
+							<Button variant="outline-primary" onClick={queryClient}> Filter </Button>
+						</Col>
+						<Col>
+							<Button variant="outline-secondary" onClick={queryExport}> Export CSV </Button>
 						</Col>
 					</Row>
 					</Form>

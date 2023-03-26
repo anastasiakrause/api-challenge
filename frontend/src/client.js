@@ -43,6 +43,20 @@ class FastAPIClient {
       return data;
     });
   }
+
+  exportVehicleData(vehicle_id = "", start="", end=""){
+    const params = {}
+    if (vehicle_id != ""){ params['vehicle_id'] = vehicle_id}
+    if (start != ""){ params['start'] = start}
+    if (end != ""){ params['end'] = end}
+
+    return this.apiClient.get(`/vehicle_data/write/`, {
+      params: params
+    }).then(({data}) => {
+      return data;
+    });
+  }
+
 }
 
 export default FastAPIClient;

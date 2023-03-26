@@ -8,6 +8,7 @@ from app.api import deps
 from app.schemas.vehicle import VehicleData, VehicleDataCreate
 from fastapi_pagination import Page, paginate
 from app.api.helpers import filter_vehicle_data, sort_vehicle_data, validate_vehicle_id
+import csv
 
 router = APIRouter()
 
@@ -79,3 +80,37 @@ def create_vehicle(
     
     crud_vehicle.create(db, obj_in=vehicle_entry)
     return vehicle_entry
+
+@router.get("/write/", status_code=200)
+def export_vehicle_data(
+               vehicle_id: Union[str, None] = None,
+               start : Union[datetime, None] = None,
+               end : Union[datetime, None] = None,
+               limit : Union[int, None] = None,
+               sort_by : str = None,
+               db: Session = Depends(deps.get_db),
+            ):
+    """
+    Export data: fetches and exports data.
+    """
+
+    result = crud_vehicle.get_multi(db=db)
+    if not result:
+        raise HTTPException(
+            status_code=404, detail=f"DB table not found."
+        )
+    
+    if vehicle_id:
+        result = list(filter(lambda vehicle: vehicle_id == vehicle.vehicle_id, result))
+    
+    if start or end or limit: result = filter_vehicle_data(result, start, end, limit)
+    
+    if sort_by: result = sort_vehicle_data(result, sort_by)
+
+    with open('output.csv', 'w',) as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['id','vehicle_id', 'timestamp', 'speed','odometer','soc','elevation','shift_state'])
+        for vd in result:
+            writer.writerow([vd.id, vd.vehicle_id, vd.timestamp, vd.speed, vd.odometer, vd.soc, vd.elevation,vd.shift_state])
+    
+    return True
