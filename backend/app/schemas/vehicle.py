@@ -44,12 +44,16 @@ class VehicleDataCreate(VehicleBase):
         if v < 0:
             raise ValueError('Odometer value must be positive')
         return v
-    
+
+    """
     @validator('timestamp')
     def valid_timestamp(cls, v):
+        print (v)
         if not validate_timestamp_iso(v):
             raise ValueError("Timestamp string not in ISO format")
         return v
+    """
+
 
 # Properties shared by models stored in DB
 class VehicleInDBBase(VehicleBase):

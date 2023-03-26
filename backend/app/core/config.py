@@ -24,7 +24,7 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
     
-    SQLALCHEMY_DATABASE_URI: Optional[str] = "sqlite:///example.db"
+    SQLALCHEMY_DATABASE_URI: Optional[str] = "sqlite://vehicle_data.db"
 
     class Config:
         case_sensitive = True

@@ -5,19 +5,18 @@ from app.crud.crud_vehicle import crud_vehicle
 from app.schemas.vehicle import VehicleDataCreate
 from app.db import base   # noqa: F401
 from app.db.base_class import Base
-from vehicle_data import VEHICLES
 from datetime import datetime
 from db.session import engine
-
+from vehicle_data import load_vehicle_data
 logger = logging.getLogger(__name__)
 
 def init_db(db: Session) -> None:
     Base.metadata.create_all(bind=engine)
-    #crud_vehicle.delete(db)
+    VEHICLES = load_vehicle_data()
     for vehicle in VEHICLES:
         vehicle_in = VehicleDataCreate(
             vehicle_id=vehicle["vehicle_id"],
-            timestamp=vehicle["timestamp"],
+            timestamp=datetime.fromisoformat(vehicle["timestamp"]),
             speed=vehicle["speed"],
             odometer=vehicle["odometer"],
             soc=vehicle["soc"],

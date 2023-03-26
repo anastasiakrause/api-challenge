@@ -126,11 +126,12 @@ const Dashboard = () => {
 				style={{ minHeight: "100vh" }}
 			>
 				<Header />
-				<div className="container pt-20 text-left">
+				<div className="container pt-20 text-left"
+					style={{ marginTop: "2%" }}>
 
-				<Form>
+				<Form style={{ marginBottom: "2%" }}>
 					<Row>
-						<Col>
+						<Col xs={4}>
 							<Form.Control
 								type="text"
 								value={filterVehicleIDInput || ''}
@@ -138,7 +139,7 @@ const Dashboard = () => {
 								placeholder={"Search Vehicle ID"}
 							/>
 						</Col>
-						<Col>
+						<Col xs={2}>
 							<Form.Control
 								type="text"
 								value={vehicleStartTimestamp || ''}
@@ -146,7 +147,7 @@ const Dashboard = () => {
 								placeholder={"Start timestamp"}
 							/>
 						</Col>
-						<Col>
+						<Col xs={2}>
 							<Form.Control
 								type="text"
 								value={vehicleEndTimestamp || ''}
@@ -154,11 +155,11 @@ const Dashboard = () => {
 								placeholder={"End timestamp"}
 							/>
 						</Col>
-						<Col>
+						<Col xs="auto">
 							<Button variant="outline-primary" onClick={handleFilterButtonClick}> Filter </Button>
 						</Col>
-						<Col>
-							<Button variant="outline-secondary" onClick={queryExport}> Export CSV </Button>
+						<Col xs="auto">
+							<Button variant="outline-secondary" onClick={queryExport}> Export to CSV</Button>
 						</Col>
 					</Row>
 					</Form>
