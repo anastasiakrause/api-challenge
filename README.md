@@ -28,8 +28,7 @@ To run tests:
 
 ## Overview and features
 
-** Demo can be found [here](https://drive.google.com/file/d/13Y5-OJj1r8GTSfwKKn8ROi0m7dvlp5F8/view?usp=sharing). **
-This was built with FastAPI and React. It includes:
+Demo can be found [here](https://drive.google.com/file/d/13Y5-OJj1r8GTSfwKKn8ROi0m7dvlp5F8/view?usp=sharing). This was built with FastAPI and React. It includes:
 
  - [X] Created model for `VehicleData` type
  - [X] Implemented `GET` and `POST` endpoints
