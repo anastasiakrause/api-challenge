@@ -6,6 +6,7 @@ Running the app is composed of (1) starting the API server and (2) running the R
 First: clone the repo. Then go ahead and do the following to get our server running:
 
     cd backend
+    python -m venv venv
     pip install requirements.txt
     sh start.sh
     uvicorn app.main:app --reload --host localhost --port 8001
@@ -18,6 +19,12 @@ To open the web app, in another tab run:
     npm start
 
 ... and we should be good to go! The app should be running on `localhost:3000`.
+
+To run tests:
+
+    cd backend
+    pytest app/test/test_main.py
+    pytest app/test_endpoints.py
 
 ## Overview and features
 
