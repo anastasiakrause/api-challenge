@@ -42,5 +42,6 @@ This was built with FastAPI and React. It includes:
  - Right now sorting is done on the client-side and only sorts for the current page; can implement on-click functionality that rerenders data from server-side response
  - The app can use more testing, it's definitely minimal
  - Deployment to netlify/heroku
+ - Form validation on frontend
 
 
