@@ -5,13 +5,17 @@ import pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 class Settings(BaseSettings):
+    # Prefix string for API versioning
     API_V1_STR: str = "/api/v1"
+
+    # Allow requests from:
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
         "http://localhost:3000",
         "http://localhost:8001",  # type: ignore
     ]
 
     # Origins that match this regex OR are in the above list are allowed
+    # For future deployment
     BACKEND_CORS_ORIGIN_REGEX: Optional[
         str
     ] = "https.*\.(netlify.app|herokuapp.com)"  # noqa: W605
@@ -24,6 +28,7 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
     
+    # Database URI
     SQLALCHEMY_DATABASE_URI: Optional[str] = "sqlite://vehicle_data.db"
 
     class Config:

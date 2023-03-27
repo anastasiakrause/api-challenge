@@ -11,8 +11,13 @@ from vehicle_data import load_vehicle_data
 logger = logging.getLogger(__name__)
 
 def init_db(db: Session) -> None:
+    # Create database schemas
     Base.metadata.create_all(bind=engine)
+
+    # Load vehicle data from local data/ folder into variable
     VEHICLES = load_vehicle_data()
+
+    # Add each local record to database
     for vehicle in VEHICLES:
         vehicle_in = VehicleDataCreate(
             vehicle_id=vehicle["vehicle_id"],

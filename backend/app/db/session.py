@@ -8,4 +8,5 @@ engine = create_engine(
     connect_args = {"check_same_thread": False}
 )
 
+# Create session that will be propogated to different areas of the app
 SessionLocal = sessionmaker(autocommit=False, autoflush=False,  bind=engine)
