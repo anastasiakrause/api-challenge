@@ -1,7 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Union, List
-from pathlib import Path
 from sqlalchemy.orm import Session
 
 from datetime import datetime

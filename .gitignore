@@ -1,4 +1,3 @@
 **/__pycache__/
-backend/app/vehicle_data.db
-backend/.DS_Store
-.DS_STORE
+backend/vehicle_data.db
+backend/.pytest_cache
