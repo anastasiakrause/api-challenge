@@ -1,4 +1,4 @@
-# Welcome to Anastasia's Volteras API Challenge!
+# Welcome to Anastasia's EV app!
 
 ## Running the app
 
